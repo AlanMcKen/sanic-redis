@@ -42,13 +42,14 @@ class SanicRedis:
         return self.__version__
 
     def init_app(self, app: Sanic, config_name: str = None,
-                 redis_url: str = ""):
+                 redis_url: str = "", decode_responses: bool = True):
         """
             init_app for Sanic
         """
 
         self.app = app
         self.redis_url = redis_url
+        self.decode_responses = decode_responses
         if config_name:
             self.config_name = config_name
 
@@ -64,7 +65,7 @@ class SanicRedis:
                     f"{config_name} Sanic config variable"
                 )
             logger.info("[sanic-redis] connecting")
-            _redis = await from_url(_redis_url)
+            _redis = await from_url(_redis_url, self.decode_responses)
             setattr(_app.ctx, self.config_name.lower(), _redis)
             self.conn = _redis
 
