@@ -65,7 +65,7 @@ class SanicRedis:
                     f"{config_name} Sanic config variable"
                 )
             logger.info("[sanic-redis] connecting")
-            _redis = await from_url(_redis_url, self.decode_responses)
+            _redis = await from_url(_redis_url, decode_responses=self.decode_responses)
             setattr(_app.ctx, self.config_name.lower(), _redis)
             self.conn = _redis
 
